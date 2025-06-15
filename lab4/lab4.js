@@ -52,14 +52,13 @@ class Book {
 }
 
 function formatDate(date) {
-    // Получаем компоненты даты
-    const year = date.getFullYear();
-    // Месяцы в JavaScript начинаются с 0 (январь = 0), поэтому добавляем 1
-    const month = String(date.getMonth() + 1).padStart(2, '0');
+    // Получаем компоненты даты в формате дд.мм.гг
     const day = String(date.getDate()).padStart(2, '0');
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const year = String(date.getFullYear()).slice(-2);
     
-    // Собираем дату в формате YYYY-MM-DD
-    return `${year}-${month}-${day}`;
+    // Собираем дату в формате дд.мм.гг (например: 11.11.11)
+    return `${day}.${month}.${year}`;
 }
 
 try {
@@ -145,9 +144,9 @@ try {
     let date2 = new Date(2000, 11, 1); 
     let date3 = new Date(1995, 9, 10); 
 
-    console.log("Дата 1:", formatDate(date1));  // 2024-01-20
-    console.log("Дата 2:", formatDate(date2));  // 2000-12-01
-    console.log("Дата 3:", formatDate(date3));  // 1995-10-10
+    console.log("Дата 1:", formatDate(date1));  // 20.01.24
+    console.log("Дата 2:", formatDate(date2));  // 01.12.00
+    console.log("Дата 3:", formatDate(date3));  // 10.10.95
 } catch (error) {
     console.error("Произошла ошибка:", error.message);
 }
