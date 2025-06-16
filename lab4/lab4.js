@@ -80,15 +80,16 @@ try {
     for (let i = 0; i < books.length; ++i) {
         books[i].show();
     }
-
     function isEmpty(obj) {
-        if (typeof obj !== 'object' || obj === null) return true;
-
-        for (let key in obj) {
-            if (obj.hasOwnProperty(key)) return false;
-        }
-        return Object.getOwnPropertySymbols(obj).length === 0;
+    if (obj == null) return true;
+    if (typeof obj !== 'object') return true;
+    // Проверяем обычные свойства
+    for (let key in obj) {
+        if (obj.hasOwnProperty(key)) return false;
     }
+    // Проверяем символьные свойства
+    return Object.getOwnPropertySymbols(obj).length === 0;
+}
 
     let obj1 = { [Symbol()]: true };
     let obj2 = {};
