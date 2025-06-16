@@ -51,13 +51,16 @@ class Book {
     }
 }
 
+/**
+ * Форматирует дату в строку вида "дд.мм.гггг"
+ * @param {Date} date - объект даты
+ * @returns {string} - отформатированная дата
+ */
 function formatDate(date) {
-    // Получаем компоненты даты в формате дд.мм.гг
     const day = String(date.getDate()).padStart(2, '0');
     const month = String(date.getMonth() + 1).padStart(2, '0');
-    const year = String(date.getFullYear()).slice(-2);
+    const year = date.getFullYear(); // Получаем полный год
     
-    // Собираем дату в формате дд.мм.гг (например: 11.11.11)
     return `${day}.${month}.${year}`;
 }
 
@@ -80,26 +83,31 @@ try {
     for (let i = 0; i < books.length; ++i) {
         books[i].show();
     }
+
+    /**
+     * Возвращает true, если в объекте нет свойств (в том числе символьных и неперечисляемых) 
+     * и false – если хоть одно свойство есть.
+     */
     function isEmpty(obj) {
-    if (obj == null) return true;
-    if (typeof obj !== 'object') return true;
-    // Проверяем обычные свойства
-    for (let key in obj) {
-        if (obj.hasOwnProperty(key)) return false;
+        if (obj === null || typeof obj !== 'object') {
+            return true;
+        }
+        return Reflect.ownKeys(obj).length === 0;
     }
-    // Проверяем символьные свойства
-    return Object.getOwnPropertySymbols(obj).length === 0;
-}
 
-    let obj1 = { [Symbol()]: true };
-    let obj2 = {};
+    console.log("\n--- Проверка функции isEmpty по заданию ---");
+    let emptyObj = {};
+    console.log("Проверка на {}:", isEmpty(emptyObj)); // true
 
-    console.log("Объект 1", isEmpty(obj1));
-    console.log("Объект 2", isEmpty(obj2));
+    let symbolObj = { [Symbol("id")]: true };
+    console.log("Проверка на {[Symbol()]: true}:", isEmpty(symbolObj)); // false
+
+    let nonEnumObj = Object.defineProperty({}, 'name', { value: 'John' });
+    console.log("Проверка на объекте с неперечисляемым свойством:", isEmpty(nonEnumObj)); // false
+    console.log("--- Конец проверки isEmpty ---\n");
 
     let classObject = {
         className: "open menu",
-
         addClass(cls) {
             let classes = this.className.split(' ');
             if (!classes.includes(cls)) {
@@ -107,7 +115,6 @@ try {
             }
             return this;
         },
-
         removeClass(cls) {
             let classes = this.className.split(' ');
             let index = classes.indexOf(cls);
@@ -145,9 +152,10 @@ try {
     let date2 = new Date(2000, 11, 1); 
     let date3 = new Date(1995, 9, 10); 
 
-    console.log("Дата 1:", formatDate(date1));  // 20.01.24
-    console.log("Дата 2:", formatDate(date2));  // 01.12.00
-    console.log("Дата 3:", formatDate(date3));  // 10.10.95
+    console.log("Дата 1:", formatDate(date1));  // Ожидаем: 20.01.2024
+    console.log("Дата 2:", formatDate(date2));  // Ожидаем: 01.12.2000
+    console.log("Дата 3:", formatDate(date3));  // Ожидаем: 10.10.1995
+
 } catch (error) {
     console.error("Произошла ошибка:", error.message);
 }
